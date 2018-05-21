@@ -1,0 +1,134 @@
+createroom room-1-1
+setname room-1-1 "Living Room"
+setdescription room-1-1 "Clean, spacious and nicely furnished. Plenty of light and fresh air floods in from the open windows."
+createroom room-1-2
+setname room-1-2 "Bedroom"
+setdescription room-1-2 "There is a large bed against the north wall, with dressers on each side."
+createexit room-1-2-South
+setname room-1-2-South South
+setdescription room-1-2-South South
+addkeyword room-1-2-South South
+addkeyword room-1-2-South south
+addkeyword room-1-2-South S
+addkeyword room-1-2-South s
+setdestination room-1-2-South room-1-1
+addexit room-1-2 room-1-2-South
+createexit room-1-1-North
+setname room-1-1-North North
+setdescription room-1-1-North North
+addkeyword room-1-1-North North
+addkeyword room-1-1-North north
+addkeyword room-1-1-North N
+addkeyword room-1-1-North n
+setdestination room-1-1-North room-1-2
+addexit room-1-1 room-1-1-North
+createroom room-0-2
+setname room-0-2 "Bathroom"
+setdescription room-0-2 "Full bathroom with a large bathtub and plenty of cabinet space."
+createexit room-0-2-East
+setname room-0-2-East East
+setdescription room-0-2-East East
+addkeyword room-0-2-East East
+addkeyword room-0-2-East east
+addkeyword room-0-2-East E
+addkeyword room-0-2-East e
+setdestination room-0-2-East room-1-2
+addexit room-0-2 room-0-2-East
+createexit room-1-2-West
+setname room-1-2-West West
+setdescription room-1-2-West West
+addkeyword room-1-2-West West
+addkeyword room-1-2-West west
+addkeyword room-1-2-West W
+addkeyword room-1-2-West w
+setdestination room-1-2-West room-0-2
+addexit room-1-2 room-1-2-West
+createroom room-2-1
+setname room-2-1 "Dining Room"
+setdescription room-2-1 "The empty room could fit a table for six people. Nice and cozy."
+createexit room-2-1-West
+setname room-2-1-West West
+setdescription room-2-1-West West
+addkeyword room-2-1-West West
+addkeyword room-2-1-West west
+addkeyword room-2-1-West W
+addkeyword room-2-1-West w
+setdestination room-2-1-West room-1-1
+addexit room-2-1 room-2-1-West
+createexit room-1-1-East
+setname room-1-1-East East
+setdescription room-1-1-East East
+addkeyword room-1-1-East East
+addkeyword room-1-1-East east
+addkeyword room-1-1-East E
+addkeyword room-1-1-East e
+setdestination room-1-1-East room-2-1
+addexit room-1-1 room-1-1-East
+createroom room-2-0
+setname room-2-0 "Kitchen"
+setdescription room-2-0 "You see everything you need to cook delicious meals. Lots of shiny counter space. Double door fridge. Microwave. Gas stove."
+createexit room-2-0-North
+setname room-2-0-North North
+setdescription room-2-0-North North
+addkeyword room-2-0-North North
+addkeyword room-2-0-North north
+addkeyword room-2-0-North N
+addkeyword room-2-0-North n
+setdestination room-2-0-North room-2-1
+addexit room-2-0 room-2-0-North
+createexit room-2-1-South
+setname room-2-1-South South
+setdescription room-2-1-South South
+addkeyword room-2-1-South South
+addkeyword room-2-1-South south
+addkeyword room-2-1-South S
+addkeyword room-2-1-South s
+setdestination room-2-1-South room-2-0
+addexit room-2-1 room-2-1-South
+creatething b7e0ecc3-7744-49fc-bcbc-03597a5c65cb
+setname b7e0ecc3-7744-49fc-bcbc-03597a5c65cb "agent"
+setdescription b7e0ecc3-7744-49fc-bcbc-03597a5c65cb "a smiling real estate agent"
+addkeyword b7e0ecc3-7744-49fc-bcbc-03597a5c65cb agent
+addkeyword b7e0ecc3-7744-49fc-bcbc-03597a5c65cb agent
+addkeyword b7e0ecc3-7744-49fc-bcbc-03597a5c65cb agent
+addkeyword b7e0ecc3-7744-49fc-bcbc-03597a5c65cb agent
+addkeyword b7e0ecc3-7744-49fc-bcbc-03597a5c65cb estate
+addkeyword b7e0ecc3-7744-49fc-bcbc-03597a5c65cb estate
+addkeyword b7e0ecc3-7744-49fc-bcbc-03597a5c65cb real
+addkeyword b7e0ecc3-7744-49fc-bcbc-03597a5c65cb real
+movething b7e0ecc3-7744-49fc-bcbc-03597a5c65cb room-1-1
+creatething 615f3bb8-da00-48b7-be63-e129f30bde94
+setname 615f3bb8-da00-48b7-be63-e129f30bde94 "couch"
+setdescription 615f3bb8-da00-48b7-be63-e129f30bde94 "a comfy gray couch"
+addkeyword 615f3bb8-da00-48b7-be63-e129f30bde94 couch
+addkeyword 615f3bb8-da00-48b7-be63-e129f30bde94 couch
+addkeyword 615f3bb8-da00-48b7-be63-e129f30bde94 comfy
+addkeyword 615f3bb8-da00-48b7-be63-e129f30bde94 comfy
+addkeyword 615f3bb8-da00-48b7-be63-e129f30bde94 gray
+addkeyword 615f3bb8-da00-48b7-be63-e129f30bde94 gray
+addkeyword 615f3bb8-da00-48b7-be63-e129f30bde94 couch
+addkeyword 615f3bb8-da00-48b7-be63-e129f30bde94 couch
+movething 615f3bb8-da00-48b7-be63-e129f30bde94 room-1-1
+creatething fa12ef0b-720b-4470-8de1-b8a83aa9ae20
+setname fa12ef0b-720b-4470-8de1-b8a83aa9ae20 "pan"
+setdescription fa12ef0b-720b-4470-8de1-b8a83aa9ae20 "a black pan"
+addkeyword fa12ef0b-720b-4470-8de1-b8a83aa9ae20 pan
+addkeyword fa12ef0b-720b-4470-8de1-b8a83aa9ae20 pan
+addkeyword fa12ef0b-720b-4470-8de1-b8a83aa9ae20 black
+addkeyword fa12ef0b-720b-4470-8de1-b8a83aa9ae20 black
+addkeyword fa12ef0b-720b-4470-8de1-b8a83aa9ae20 pan
+addkeyword fa12ef0b-720b-4470-8de1-b8a83aa9ae20 pan
+movething fa12ef0b-720b-4470-8de1-b8a83aa9ae20 room-2-0
+creatething c3019ad7-bb65-4cc5-8765-782b4f1cef84
+setname c3019ad7-bb65-4cc5-8765-782b4f1cef84 "cutting board"
+setdescription c3019ad7-bb65-4cc5-8765-782b4f1cef84 "a wooden cutting board"
+addkeyword c3019ad7-bb65-4cc5-8765-782b4f1cef84 cutting board
+addkeyword c3019ad7-bb65-4cc5-8765-782b4f1cef84 cutting board
+addkeyword c3019ad7-bb65-4cc5-8765-782b4f1cef84 wooden
+addkeyword c3019ad7-bb65-4cc5-8765-782b4f1cef84 wooden
+addkeyword c3019ad7-bb65-4cc5-8765-782b4f1cef84 cutting
+addkeyword c3019ad7-bb65-4cc5-8765-782b4f1cef84 cutting
+addkeyword c3019ad7-bb65-4cc5-8765-782b4f1cef84 board
+addkeyword c3019ad7-bb65-4cc5-8765-782b4f1cef84 board
+movething c3019ad7-bb65-4cc5-8765-782b4f1cef84 room-2-0
+movething player room-1-1

@@ -1,0 +1,98 @@
+createroom room-2-2
+setname room-2-2 "Prize Counter"
+setdescription room-2-2 "Redeem your tickets for prizes here."
+createroom room-1-0
+setname room-1-0 "Entrance"
+setdescription room-1-0 "Buy tokens here. Use tokens on the arcade games."
+createroom room-0-1
+setname room-0-1 "Skee-ball lanes"
+setdescription room-0-1 "Roll the ball down the lane and try to get it to fall inside the highest value holes."
+createroom room-1-1
+setname room-1-1 "Basketball booths"
+setdescription room-1-1 "Get as many points as you can in two minutes!"
+createexit room-1-1-South
+setname room-1-1-South South
+setdescription room-1-1-South South
+addkeyword room-1-1-South South
+addkeyword room-1-1-South south
+addkeyword room-1-1-South S
+addkeyword room-1-1-South s
+setdestination room-1-1-South room-1-0
+addexit room-1-1 room-1-1-South
+createexit room-1-0-North
+setname room-1-0-North North
+setdescription room-1-0-North North
+addkeyword room-1-0-North North
+addkeyword room-1-0-North north
+addkeyword room-1-0-North N
+addkeyword room-1-0-North n
+setdestination room-1-0-North room-1-1
+addexit room-1-0 room-1-0-North
+createexit room-1-1-West
+setname room-1-1-West West
+setdescription room-1-1-West West
+addkeyword room-1-1-West West
+addkeyword room-1-1-West west
+addkeyword room-1-1-West W
+addkeyword room-1-1-West w
+setdestination room-1-1-West room-0-1
+addexit room-1-1 room-1-1-West
+createexit room-0-1-East
+setname room-0-1-East East
+setdescription room-0-1-East East
+addkeyword room-0-1-East East
+addkeyword room-0-1-East east
+addkeyword room-0-1-East E
+addkeyword room-0-1-East e
+setdestination room-0-1-East room-1-1
+addexit room-0-1 room-0-1-East
+createroom room-2-1
+setname room-2-1 "Whack-a-mole"
+setdescription room-2-1 "Take the hammer and whack all the moles. This is not the time for restraint."
+createexit room-2-1-North
+setname room-2-1-North North
+setdescription room-2-1-North North
+addkeyword room-2-1-North North
+addkeyword room-2-1-North north
+addkeyword room-2-1-North N
+addkeyword room-2-1-North n
+setdestination room-2-1-North room-2-2
+addexit room-2-1 room-2-1-North
+createexit room-2-2-South
+setname room-2-2-South South
+setdescription room-2-2-South South
+addkeyword room-2-2-South South
+addkeyword room-2-2-South south
+addkeyword room-2-2-South S
+addkeyword room-2-2-South s
+setdestination room-2-2-South room-2-1
+addexit room-2-2 room-2-2-South
+createexit room-2-1-West
+setname room-2-1-West West
+setdescription room-2-1-West West
+addkeyword room-2-1-West West
+addkeyword room-2-1-West west
+addkeyword room-2-1-West W
+addkeyword room-2-1-West w
+setdestination room-2-1-West room-1-1
+addexit room-2-1 room-2-1-West
+createexit room-1-1-East
+setname room-1-1-East East
+setdescription room-1-1-East East
+addkeyword room-1-1-East East
+addkeyword room-1-1-East east
+addkeyword room-1-1-East E
+addkeyword room-1-1-East e
+setdestination room-1-1-East room-2-1
+addexit room-1-1 room-1-1-East
+creatething bbe2c259-2788-47cd-9a62-e4b4185fd0d0
+setname bbe2c259-2788-47cd-9a62-e4b4185fd0d0 "token machine"
+setdescription bbe2c259-2788-47cd-9a62-e4b4185fd0d0 "a token machine"
+addkeyword bbe2c259-2788-47cd-9a62-e4b4185fd0d0 token machine
+addkeyword bbe2c259-2788-47cd-9a62-e4b4185fd0d0 token machine
+addkeyword bbe2c259-2788-47cd-9a62-e4b4185fd0d0 machine
+addkeyword bbe2c259-2788-47cd-9a62-e4b4185fd0d0 machine
+addkeyword bbe2c259-2788-47cd-9a62-e4b4185fd0d0 token
+addkeyword bbe2c259-2788-47cd-9a62-e4b4185fd0d0 token
+movething bbe2c259-2788-47cd-9a62-e4b4185fd0d0 room-1-0
+movething player room-1-0
