@@ -1,6 +1,7 @@
 package pocketgems.mud;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,6 +56,8 @@ public class InputProcessor {
 				} catch (EntityNotFoundException e) {
 					System.out.println("The entity '" + e.getEntityId() + "' could not be understood");
 					System.out.println();
+				}  catch (Exception exception) {
+					System.out.println("Something bad happened processing command: " + command);
 				}
 			}
 		}
@@ -95,8 +98,10 @@ public class InputProcessor {
 				}
 
 				bufferedReader.close();
+			} catch (FileNotFoundException exception) {
+				System.out.println("File not found: " + arguments.get(0));
 			} catch (IOException exception) {
-				System.out.println(exception);
+				System.out.println("Error reading file: " + arguments.get(0));
 			}
 		} else if (command.equals("createroom")) {
 			Entity room = EntityFactory.createRoom();
