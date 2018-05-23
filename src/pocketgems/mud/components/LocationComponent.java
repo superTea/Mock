@@ -1,7 +1,7 @@
 package pocketgems.mud.components;
 
 import pocketgems.mud.Entity;
-import pocketgems.mud.EntityNotFoundException;
+import pocketgems.mud.exceptions.EntityNotFoundException;
 import pocketgems.mud.World;
 
 /*

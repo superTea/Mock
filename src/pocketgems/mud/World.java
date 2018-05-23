@@ -3,7 +3,7 @@ package pocketgems.mud;
 import java.util.HashMap;
 
 import pocketgems.mud.components.IdentityComponent;
-
+import pocketgems.mud.exceptions.EntityNotFoundException;
 
 /*
  * World
@@ -22,7 +22,7 @@ public class World {
 	}
 
 	public void AddEntity(Entity entity) {
-		IdentityComponent identityComponent = (IdentityComponent)entity.getComponent(IdentityComponent.class);
+		IdentityComponent identityComponent = entity.getComponentOrNull(IdentityComponent.class);
 		if (identityComponent != null) {
 			entitiesById.put(identityComponent.id, entity);
 		}

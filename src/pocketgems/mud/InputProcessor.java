@@ -8,11 +8,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pocketgems.mud.components.DescriptionComponent;
-import pocketgems.mud.components.IdentityComponent;
-import pocketgems.mud.components.LocationComponent;
-import pocketgems.mud.components.PortalComponent;
-import pocketgems.mud.components.RoomComponent;
+import pocketgems.mud.components.*;
+import pocketgems.mud.exceptions.*;
 
 /*
  * InputProcessor
@@ -56,15 +53,22 @@ public class InputProcessor {
 				} catch (EntityNotFoundException e) {
 					System.out.println("The entity '" + e.getEntityId() + "' could not be understood");
 					System.out.println();
-				}  catch (Exception exception) {
-					System.out.println("Something bad happened processing command: " + command);
+				} catch (ComponentNotFoundException e) {
+					IdentityComponent identityComponent = e.getEntity().getComponentOrNull(IdentityComponent.class);
+					String entityId = identityComponent != null ? identityComponent.id : "<unknown>";
+					String componentName = e.getComponentType().getSimpleName();
+					System.out.println("The entity '" + entityId + "' is missing '" + componentName + "'");
+					System.out.println();
+				} catch (Exception exception) {
+					System.out.println("Something unexpected happened processing command: " + command);
+					System.out.println();
 				}
 			}
 		}
 	}
 
 	protected boolean processCommand(String command, ArrayList<String> arguments, Game game)
-		throws EntityNotFoundException {
+		throws ComponentNotFoundException, EntityNotFoundException {
 		World world = game.getWorld();
 		
 		// Print list of commands
@@ -105,52 +109,47 @@ public class InputProcessor {
 			}
 		} else if (command.equals("createroom")) {
 			Entity room = EntityFactory.createRoom();
-			room.getComponent(IdentityComponent.class).id = arguments.get(0);
+			room.getIdentityComponent().id = arguments.get(0);
 			world.AddEntity(room);
 		} else if (command.equals("createexit")) {
 			Entity exit = EntityFactory.createExit();
-			exit.getComponent(IdentityComponent.class).id = arguments.get(0);
+			exit.getIdentityComponent().id = arguments.get(0);
 			world.AddEntity(exit);
 		} else if (command.equals("creatething")) {
 			Entity thing = EntityFactory.createThing();
-			thing.getComponent(IdentityComponent.class).id = arguments.get(0);
+			thing.getIdentityComponent().id = arguments.get(0);
 			world.AddEntity(thing);
 		} else if (command.equals("setname")) {
 			Entity entity = world.GetEntity(arguments.get(0));
-			DescriptionComponent descriptionComponent = entity.getComponent(DescriptionComponent.class);
-			descriptionComponent.name = arguments.get(1);
+			entity.getDescriptionComponent().name = arguments.get(1);
 		} else if (command.equals("setdescription")) {
 			Entity entity = world.GetEntity(arguments.get(0));
-			DescriptionComponent descriptionComponent = (DescriptionComponent) entity
-					.getComponent(DescriptionComponent.class);
-			descriptionComponent.description = arguments.get(1);
+			entity.getDescriptionComponent().description = arguments.get(1);
 		} else if (command.equals("addexit")) {
 			Entity room = world.GetEntity(arguments.get(0));
 			Entity exit = world.GetEntity(arguments.get(1));
-			room.getComponent(RoomComponent.class).exitIds.add(exit.getComponent(IdentityComponent.class).id);
+			room.getRoomComponent().exitIds.add(exit.getIdentityComponent().id);
 		} else if (command.equals("setdestination")) {
 			Entity exit = world.GetEntity(arguments.get(0));
 			Entity room = world.GetEntity(arguments.get(1));
-			exit.getComponent(PortalComponent.class).destinationRoomId = room.getComponent(IdentityComponent.class).id;
+			exit.getPortalComponent().destinationRoomId = room.getIdentityComponent().id;
 		} else if (command.equals("addkeyword")) {
 			Entity entity = world.GetEntity(arguments.get(0));
-			DescriptionComponent descriptionComponent = (DescriptionComponent) entity
-					.getComponent(DescriptionComponent.class);
-			descriptionComponent.keywords.add(arguments.get(1));
+			entity.getDescriptionComponent().keywords.add(arguments.get(1));
 		} else if (command.equals("movething")) {
 			Entity thing = world.GetEntity(arguments.get(0));
 			Entity room = world.GetEntity(arguments.get(1));
-			moveToRoom(world, thing, room.getComponent(IdentityComponent.class).id);
+			moveToRoom(world, thing, room.getIdentityComponent().id);
 		} else if ((command.equals("look")) || (command.equals("l"))) {
 			if (arguments.size() == 0) {
-				Entity room = world.GetPlayer().getComponent(LocationComponent.class).room(world);
+				Entity room = world.GetPlayer().getLocationComponent().room(world);
 				if (room != null) {
-					System.out.println(room.getComponent(DescriptionComponent.class).name);
+					System.out.println(room.getDescriptionComponent().name);
 					System.out.println();
-					System.out.println(room.getComponent(DescriptionComponent.class).description);
+					System.out.println(room.getDescriptionComponent().description);
 					System.out.println();
 	
-					RoomComponent roomComponent = room.getComponent(RoomComponent.class);
+					RoomComponent roomComponent = room.getRoomComponent();
 					if (roomComponent.inhabitantIds.size() > 1) {
 						// There is at least one thing here that isn't the player.
 						System.out.println("You see the following:");
@@ -159,7 +158,7 @@ public class InputProcessor {
 							Entity inhabitant = world.GetEntity(inhabitantId);
 							if (inhabitant != world.GetPlayer()) {
 								System.out
-										.println("  - " + inhabitant.getComponent(DescriptionComponent.class).description);
+										.println("  - " + inhabitant.getDescriptionComponent().description);
 							}
 						}
 					}
@@ -168,7 +167,7 @@ public class InputProcessor {
 					System.out.print("Exits:");
 					for (String exitId : roomComponent.exitIds) {
 						Entity exit = world.GetEntity(exitId);
-						System.out.print(" " + exit.getComponent(DescriptionComponent.class).name);
+						System.out.print(" " + exit.getDescriptionComponent().name);
 					}
 					System.out.println();
 				} else {
@@ -181,20 +180,19 @@ public class InputProcessor {
 				if (target == null) {
 					System.out.println("You do not see that here.");
 				} else {
-					DescriptionComponent descriptionComponent = target.getComponent(DescriptionComponent.class);
-					System.out.println("You look at the " + descriptionComponent.name + ".");
+					System.out.println("You look at the " + target.getDescriptionComponent().name + ".");
 				}
 				
 				System.out.println();
 			}
 		} else if ((command.equals("go")) || (command.equals("move"))) {
-			Entity room = world.GetPlayer().getComponent(LocationComponent.class).room(world);
+			Entity room = world.GetPlayer().getLocationComponent().room(world);
 			if (room != null) {
-				RoomComponent roomComponent = room.getComponent(RoomComponent.class);
+				RoomComponent roomComponent = room.getRoomComponent();
 				for (String exitId : roomComponent.exitIds) {
 					Entity exit = world.GetEntity(exitId);
-					if (exit.getComponent(DescriptionComponent.class).keywords.contains(arguments.get(0))) {
-						moveToRoom(world, world.GetPlayer(), exit.getComponent(PortalComponent.class).destinationRoomId);
+					if (exit.getDescriptionComponent().keywords.contains(arguments.get(0))) {
+						moveToRoom(world, world.GetPlayer(), exit.getPortalComponent().destinationRoomId);
 						processInput("look", game);
 						return true;
 					}
@@ -209,30 +207,32 @@ public class InputProcessor {
 		return true;
 	}
 
-	protected void moveToRoom(World world, Entity entity, String destinationRoomId) throws EntityNotFoundException {
-		IdentityComponent identityComponent = entity.getComponent(IdentityComponent.class);
-		LocationComponent locationComponent = entity.getComponent(LocationComponent.class);
+	protected void moveToRoom(World world, Entity entity, String destinationRoomId)
+			throws ComponentNotFoundException, EntityNotFoundException {
+		IdentityComponent identityComponent = entity.getIdentityComponent();
+		LocationComponent locationComponent = entity.getLocationComponent();
 
 		Entity room = locationComponent.room(world);
 		if (room != null) {
-			room.getComponent(RoomComponent.class).inhabitantIds.remove(identityComponent.id);
+			room.getRoomComponent().inhabitantIds.remove(identityComponent.id);
 		}
 
 		locationComponent.roomId = destinationRoomId;
 
-		RoomComponent destinationRoomComponent = world.GetEntity(destinationRoomId).getComponent(RoomComponent.class);
+		RoomComponent destinationRoomComponent = world.GetEntity(destinationRoomId).getRoomComponent();
 		destinationRoomComponent.inhabitantIds.add(identityComponent.id);
 	}
 
 	
 
-	protected Entity entityInRoom(World world, String keyword) throws EntityNotFoundException {
-		Entity room = world.GetPlayer().getComponent(LocationComponent.class).room(world);
+	protected Entity entityInRoom(World world, String keyword)
+			throws ComponentNotFoundException, EntityNotFoundException {
+		Entity room = world.GetPlayer().getLocationComponent().room(world);
 
 		// Make sure the player is in a room
-		for (String inhabitantId : room.getComponent(RoomComponent.class).inhabitantIds) {
+		for (String inhabitantId : room.getRoomComponent().inhabitantIds) {
 			Entity inhabitant = world.GetEntity(inhabitantId);
-			DescriptionComponent descriptionComponent = inhabitant.getComponent(DescriptionComponent.class);
+			DescriptionComponent descriptionComponent = inhabitant.getDescriptionComponent();
 			if (descriptionComponent != null) {
 				if (descriptionComponent.keywords.contains(keyword)) {
 					return inhabitant;

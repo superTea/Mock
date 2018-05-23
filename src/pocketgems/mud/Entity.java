@@ -2,7 +2,8 @@ package pocketgems.mud;
 
 import java.util.HashMap;
 
-import pocketgems.mud.components.Component;
+import pocketgems.mud.components.*;
+import pocketgems.mud.exceptions.ComponentNotFoundException;
 
 /*
  * Entity
@@ -23,7 +24,26 @@ public class Entity {
 		return component;
 	}
 	
-	public <T extends Component> T getComponent(Class<T> componentType) {
-		return (T)components.get(componentType);
+	public <T extends Component> T getComponent(Class<T> componentType) throws ComponentNotFoundException {
+		T component = (T)components.get(componentType);
+		if (component == null) {
+			throw new ComponentNotFoundException(this, componentType);
+		}
+		return component;
 	}
+
+	public <T extends Component> T getComponentOrNull(Class<T> componentType) {
+		try {
+			return getComponent(componentType);
+		} catch (ComponentNotFoundException exception) {
+			return null;
+		}
+	}
+
+	// Convenience accessors
+	public DescriptionComponent getDescriptionComponent() throws ComponentNotFoundException { return getComponent(DescriptionComponent.class); }
+	public IdentityComponent getIdentityComponent() throws ComponentNotFoundException { return getComponent(IdentityComponent.class); }
+	public LocationComponent getLocationComponent() throws ComponentNotFoundException { return getComponent(LocationComponent.class); }
+	public PortalComponent getPortalComponent() throws ComponentNotFoundException { return getComponent(PortalComponent.class); }
+	public RoomComponent getRoomComponent() throws ComponentNotFoundException { return getComponent(RoomComponent.class); }
 }

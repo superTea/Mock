@@ -1,4 +1,4 @@
-package pocketgems.mud;
+package pocketgems.mud.exceptions;
 
 /*
  * EntityNotFoundException
