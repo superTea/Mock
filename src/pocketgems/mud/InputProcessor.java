@@ -46,18 +46,45 @@ public class InputProcessor {
 				String command = tokens.get(0);
 				tokens.remove(0);
 				
-				if (!processCommand(command, tokens, game)) {
-					System.out.println("Unrecognized command: " + command);
+				try {
+					if (!processCommand(command, tokens, game)) {
+						System.out.println("Unrecognized command: " + command);
+						System.out.println("Type 'help' for a full list of commands");
+						System.out.println();
+					}
+				} catch (EntityNotFoundException e) {
+					System.out.println("The entity '" + e.getEntityId() + "' could not be understood");
 					System.out.println();
 				}
 			}
 		}
 	}
 
-	protected boolean processCommand(String command, ArrayList<String> arguments, Game game) {
+	protected boolean processCommand(String command, ArrayList<String> arguments, Game game)
+		throws EntityNotFoundException {
 		World world = game.getWorld();
 		
-		if (command.equals("load")) {
+		// Print list of commands
+		if (command.equals("help")) {
+			if (arguments.size() > 0 && arguments.get(0).equals("admin")) {
+				System.out.print("Create elements in the world with:\n  ");
+				String[] adminCommands = {
+					"createroom", "createexit", "creatething", "setname", "setdescription",
+					"addexit", "setdestination", "addkeyword"
+				};
+				System.out.println(String.join("\n  ", adminCommands));
+				System.out.println();
+			} else {
+				System.out.println("Useful commands:\n" +
+					"  help                       This output\n" +
+					"  movething <thing> <place>  Used to place an object in the world, including the player\n" +
+					"  look [keyword]             Look at the current room or named object\n" +
+					"  go <exit>                  Go to the named exit\n" +
+					"  exit                       Quit the game\n" +
+					"\ntry \"help admin\" for a list of world-building commands");
+				System.out.println();
+			}
+		} else if (command.equals("load")) {
 			try {
 				FileReader fileReader = new FileReader(arguments.get(0));
 				BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -145,7 +172,7 @@ public class InputProcessor {
 				
 				System.out.println();
 			} else {
-				Entity target = EntityInRoom(world, arguments.get(0));
+				Entity target = entityInRoom(world, arguments.get(0));
 				if (target == null) {
 					System.out.println("You do not see that here.");
 				} else {
@@ -164,10 +191,12 @@ public class InputProcessor {
 					if (exit.getComponent(DescriptionComponent.class).keywords.contains(arguments.get(0))) {
 						moveToRoom(world, world.GetPlayer(), exit.getComponent(PortalComponent.class).destinationRoomId);
 						processInput("look", game);
-						break;
+						return true;
 					}
 				}
 			}
+			// Room not found
+			throw new EntityNotFoundException(arguments.get(0));
 		} else {
 			return false;
 		}
@@ -175,7 +204,7 @@ public class InputProcessor {
 		return true;
 	}
 
-	protected void moveToRoom(World world, Entity entity, String destinationRoomId) {
+	protected void moveToRoom(World world, Entity entity, String destinationRoomId) throws EntityNotFoundException {
 		IdentityComponent identityComponent = entity.getComponent(IdentityComponent.class);
 		LocationComponent locationComponent = entity.getComponent(LocationComponent.class);
 
@@ -192,8 +221,10 @@ public class InputProcessor {
 
 	
 
-	protected Entity EntityInRoom(World world, String keyword) {
+	protected Entity entityInRoom(World world, String keyword) throws EntityNotFoundException {
 		Entity room = world.GetPlayer().getComponent(LocationComponent.class).room(world);
+
+		// Make sure the player is in a room
 		for (String inhabitantId : room.getComponent(RoomComponent.class).inhabitantIds) {
 			Entity inhabitant = world.GetEntity(inhabitantId);
 			DescriptionComponent descriptionComponent = inhabitant.getComponent(DescriptionComponent.class);
@@ -204,6 +235,6 @@ public class InputProcessor {
 			}
 		}
 
-		return null;
+		throw new EntityNotFoundException(keyword);
 	}
 }

@@ -28,8 +28,12 @@ public class World {
 		}
 	}
 
-	public Entity GetEntity(String id) {
-		return entitiesById.get(id);
+	public Entity GetEntity(String id) throws EntityNotFoundException {
+		Entity e = entitiesById.get(id);
+		if (e == null) {
+			throw new EntityNotFoundException(id);
+		}
+		return e;
 	}
 
 	public Entity GetPlayer() {
