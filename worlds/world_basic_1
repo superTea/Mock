@@ -149,3 +149,16 @@ addkeyword room-2-1-South s
 setdestination room-2-1-South room-2-0
 addexit room-2-1 room-2-1-South
 movething player room-2-4
+createitem abc123
+setname abc123 "top hat"
+setdescription abc123 "a black top hat"
+addkeyword abc123 black
+addkeyword abc123 top
+addkeyword abc123 hat
+movething abc123 room-2-4
+get hat
+look
+inventory
+drop hat
+look
+inventory

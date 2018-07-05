@@ -1,6 +1,6 @@
 package pocketgems.mud.exceptions;
 
-import pocketgems.mud.Entity;
+import pocketgems.mud.entity.Entity;
 import pocketgems.mud.components.Component;
 
 /*

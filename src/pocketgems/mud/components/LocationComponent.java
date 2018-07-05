@@ -1,6 +1,6 @@
 package pocketgems.mud.components;
 
-import pocketgems.mud.Entity;
+import pocketgems.mud.entity.Entity;
 import pocketgems.mud.exceptions.EntityNotFoundException;
 import pocketgems.mud.World;
 
@@ -12,10 +12,10 @@ import pocketgems.mud.World;
 public class LocationComponent extends Component {
 	public String roomId;
 
-	public Entity room(World world) throws EntityNotFoundException {
+	public Entity room() throws EntityNotFoundException {
 		if (roomId == null) {
 			return null;
 		}
-		return world.GetEntity(roomId);
+		return World.getInstance().getEntity(roomId);
 	}
 }

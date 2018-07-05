@@ -3,6 +3,8 @@ package pocketgems.mud;
 import java.util.HashMap;
 
 import pocketgems.mud.components.IdentityComponent;
+import pocketgems.mud.entity.Entity;
+import pocketgems.mud.entity.Player;
 import pocketgems.mud.exceptions.EntityNotFoundException;
 
 /*
@@ -13,22 +15,30 @@ import pocketgems.mud.exceptions.EntityNotFoundException;
  */
 public class World {
 	private HashMap<String, Entity> entitiesById;
-	private Entity player;
+	private Player player;
+	private static World instance;
 
-	public World(Entity player) {
+	public World() {
 		entitiesById = new HashMap<String, Entity>();
-		this.player = player;
-		AddEntity(player);
+		player = EntityFactory.createPlayer();
+		addEntity(player);
 	}
 
-	public void AddEntity(Entity entity) {
+	public static synchronized World getInstance() {
+		if (instance == null) {
+			instance = new World();
+		}
+		return instance;
+	}
+
+	public void addEntity(Entity entity) {
 		IdentityComponent identityComponent = entity.getComponentOrNull(IdentityComponent.class);
 		if (identityComponent != null) {
 			entitiesById.put(identityComponent.id, entity);
 		}
 	}
 
-	public Entity GetEntity(String id) throws EntityNotFoundException {
+	public Entity getEntity(String id) throws EntityNotFoundException {
 		Entity e = entitiesById.get(id);
 		if (e == null) {
 			throw new EntityNotFoundException(id);
@@ -36,7 +46,7 @@ public class World {
 		return e;
 	}
 
-	public Entity GetPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 }

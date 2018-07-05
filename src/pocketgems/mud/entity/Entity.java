@@ -1,9 +1,10 @@
-package pocketgems.mud;
+package pocketgems.mud.entity;
 
 import java.util.HashMap;
 
 import pocketgems.mud.components.*;
 import pocketgems.mud.exceptions.ComponentNotFoundException;
+import pocketgems.mud.exceptions.EntityNotFoundException;
 
 /*
  * Entity
@@ -12,11 +13,12 @@ import pocketgems.mud.exceptions.ComponentNotFoundException;
  * game state should consist of nothing more than a set of Entities.
  * 
  */
-public class Entity {
+public abstract class Entity {
 	private HashMap<Class, Component> components;
 	
 	public Entity() {
 		components = new HashMap<Class, Component>();
+		createBaseComponents();
 	}
 	
 	public <T extends Component> T addComponent(T component) {
@@ -40,10 +42,19 @@ public class Entity {
 		}
 	}
 
+	private void createBaseComponents() {
+		addComponent(new IdentityComponent());
+		addComponent(new DescriptionComponent());
+	}
+
+	public abstract void get() throws ComponentNotFoundException, EntityNotFoundException;
+	public abstract void drop() throws ComponentNotFoundException, EntityNotFoundException;
+
 	// Convenience accessors
 	public DescriptionComponent getDescriptionComponent() throws ComponentNotFoundException { return getComponent(DescriptionComponent.class); }
 	public IdentityComponent getIdentityComponent() throws ComponentNotFoundException { return getComponent(IdentityComponent.class); }
 	public LocationComponent getLocationComponent() throws ComponentNotFoundException { return getComponent(LocationComponent.class); }
 	public PortalComponent getPortalComponent() throws ComponentNotFoundException { return getComponent(PortalComponent.class); }
 	public RoomComponent getRoomComponent() throws ComponentNotFoundException { return getComponent(RoomComponent.class); }
+	public InventoryComponent getInventoryComponent() throws ComponentNotFoundException { return getComponent(InventoryComponent.class); }
 }

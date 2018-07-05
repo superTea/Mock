@@ -1,5 +1,7 @@
 package pocketgems.mud;
 
+import pocketgems.mud.entity.Entity;
+
 import java.util.Scanner;
 
 /*
@@ -13,9 +15,9 @@ public class Game {
 	private World world;
 	private InputProcessor inputProcessor;
 	
-	public Game(InputProcessor inputProcessor, Entity player, String gameStateFileName) {
+	public Game(InputProcessor inputProcessor, String gameStateFileName) {
 		this.inputProcessor = inputProcessor;
-		world = new World(player);
+		world = World.getInstance();
 		
 		if (!gameStateFileName.equals("")) {
 			inputProcessor.processInput("load " + gameStateFileName, this);
@@ -39,7 +41,7 @@ public class Game {
 
 		scanner.close();
 	}
-	
+
 	public World getWorld() {
 		return world;
 	}

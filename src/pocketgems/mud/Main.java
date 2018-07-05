@@ -13,7 +13,7 @@ public class Main {
 			gameStateFileName = args[0];
 		}
 		
-		Game game = new Game(new InputProcessor(), EntityFactory.createPlayer(), gameStateFileName);
+		Game game = new Game(new InputProcessor(), gameStateFileName);
 		game.run();
 	}
 }
